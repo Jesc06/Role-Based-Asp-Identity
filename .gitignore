@@ -1,0 +1,5 @@
+bin/*
+wwwroot/*
+Properties/*
+Migrations/*
+obj/*
