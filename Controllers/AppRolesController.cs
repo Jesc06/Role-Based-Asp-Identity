@@ -1,21 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace Identity_User_Roles.Controllers
 {
+    [Authorize]
     public class AppRolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
-
+     
         public AppRolesController(RoleManager<IdentityRole> roleManager)
         {
             _roleManager = roleManager;
-        }
+        } 
 
 
         //list all the roles created by users 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             var roles = _roleManager.Roles;
             return View(roles);
@@ -38,6 +40,7 @@ namespace Identity_User_Roles.Controllers
             }
             return RedirectToAction("Index");
         }
+
 
 
     }

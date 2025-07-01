@@ -2,7 +2,7 @@
 
 namespace Identity_User_Roles.Controllers
 {
-    public class LoginController : Controller
+    public class HomeController : Controller
     {
         public IActionResult Index()
         {
