@@ -21,6 +21,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(option =>
     option.User.RequireUniqueEmail = true;
     option.SignIn.RequireConfirmedEmail = false;
 })
+    
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders()
     .AddRoles<IdentityRole>();
@@ -29,13 +30,12 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(option =>
 var app = builder.Build();
 
 
-await SeedService.SeedDatabase(app.Services);
-
 
 if (app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
 }
+
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

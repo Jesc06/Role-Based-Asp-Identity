@@ -9,14 +9,9 @@ namespace Identity_User_Roles.Controllers
     {
 
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        public AccountController(SignInManager<IdentityUser> signInManager, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
+        public AccountController(SignInManager<IdentityUser> signInManager)
         {
             _signInManager = signInManager;
-            _roleManager = roleManager;
-            _userManager = userManager;
-
         }
 
 
@@ -24,7 +19,6 @@ namespace Identity_User_Roles.Controllers
         {
             return View();
         }
-
 
 
         [HttpPost]
@@ -35,16 +29,6 @@ namespace Identity_User_Roles.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.email, model.password, model.Rememberme, false);
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(model.email); 
-                    
-                    var roles = await _userManager.GetRolesAsync(user);
-
-
-                    if (roles.Contains("Admin"))
-                    {
-
-                    }
-
                     return RedirectToAction("Index","Home");
                 }
             }
