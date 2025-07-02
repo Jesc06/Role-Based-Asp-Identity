@@ -7,12 +7,14 @@ namespace Identity_User_Roles.Controllers
     public class RegisterController : Controller
     {
 
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<IdentityUser> _userManager;
-        public RegisterController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
+        private readonly SignInManager<IdentityUser> _signInManager;
+        public RegisterController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityUser> signInManager)
         {
-            _signInManager = signInManager;
+            _roleManager = roleManager;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
 
@@ -35,6 +37,17 @@ namespace Identity_User_Roles.Controllers
                 var result = await _userManager.CreateAsync(user,model.password);
                 if (result.Succeeded)
                 {
+                    var roleExist = await _roleManager.RoleExistsAsync("Student");
+
+                    if (!roleExist)
+                    {
+                        var role = new IdentityRole("Student");
+                        await _roleManager.CreateAsync(role);
+                    }
+
+                    await _userManager.AddToRoleAsync(user, "Student");
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Login","Account");
                 }
                 else

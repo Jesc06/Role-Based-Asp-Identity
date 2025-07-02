@@ -1,4 +1,5 @@
 using Identity_User_Roles.Data;
+using Identity_User_Roles.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,10 +26,10 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(option =>
     .AddRoles<IdentityRole>();
 
 
-
-
-
 var app = builder.Build();
+
+
+await SeedService.SeedDatabase(app.Services);
 
 
 if (app.Environment.IsDevelopment())
@@ -46,7 +47,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 name:"default",
-pattern:"{controller=AppRoles}/{action=Index}/{id?}"
+pattern:"{controller=Home}/{action=Index}/{id?}"
 );
 
 
