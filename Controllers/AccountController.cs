@@ -9,17 +9,30 @@ namespace Identity_User_Roles.Controllers
     {
 
         private readonly SignInManager<IdentityUser> _signInManager;
-        public AccountController(SignInManager<IdentityUser> signInManager)
+        private readonly  UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             if (User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                var email  = User.Identity.Name;//find current username authenticated user
+                var user = await _userManager.FindByEmailAsync(email);
+                if(await _userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home2");
+                }   
             }
             return View();
         }
@@ -33,7 +46,17 @@ namespace Identity_User_Roles.Controllers
                 var result = await _signInManager.PasswordSignInAsync(model.email, model.password, false, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index","Home");
+                    var user = await _userManager.FindByEmailAsync(model.email);
+
+                    if(await _userManager.IsInRoleAsync(user, "Admin"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home2");
+                    }
+               
                 }
             }
             return View();

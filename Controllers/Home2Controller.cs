@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Reflection.Metadata.Ecma335;
 
 namespace Identity_User_Roles.Controllers
 {
-    [Authorize(Roles = "Admin,User")]
-    public class HomeController : Controller
+    [Authorize(Roles = "User")]
+    public class Home2Controller : Controller
     {
 
+
         private readonly SignInManager<IdentityUser> _signInManager;
-        public HomeController(SignInManager<IdentityUser> signInManager)
+        public Home2Controller(SignInManager<IdentityUser> signInManager)
         {
             _signInManager = signInManager;
         }
@@ -19,7 +19,7 @@ namespace Identity_User_Roles.Controllers
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Login","Account");
+                return RedirectToAction("Login", "Account");
             }
             return View();
         }

@@ -6,6 +6,7 @@
 
 
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div asp-validation-summary="All"></div>
     <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
         <h3 class="mb-4 text-center">Login</h3>
 
@@ -29,6 +30,8 @@
             <div class="mb-3 d-flex justify-content-center">
                 <button asp-controller="Register" asp-action="Index" type="submit" class="btn btn-success  w-48">Register</button>
             </div>
+            <span asp-validation-for="email"></span>
+            <span asp-validation-for="password"></span>
 
            
         </form>
