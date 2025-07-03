@@ -8,7 +8,6 @@ namespace Identity_User_Roles.ViewModels
         public string? email { get; set; }
 
 
-
         [Required(ErrorMessage = "Role must required")]
         public string? role { get; set; }  
 

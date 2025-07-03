@@ -5,7 +5,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace Identity_User_Roles.Controllers
 {
-    [Authorize(Roles = "Admin,User")]
+    [Authorize(Roles = "Admin")]
     public class HomeController : Controller
     {
 

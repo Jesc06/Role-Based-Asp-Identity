@@ -8,11 +8,9 @@ namespace Identity_User_Roles.Controllers
     {
 
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public RegisterController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityUser> signInManager)
+        public RegisterController(UserManager<IdentityUser> userManager)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
 
 

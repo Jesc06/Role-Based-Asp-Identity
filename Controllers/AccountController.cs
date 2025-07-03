@@ -9,13 +9,12 @@ namespace Identity_User_Roles.Controllers
     {
 
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly  UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        private readonly UserManager<IdentityUser> _userManager;
+ 
+        public AccountController(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _roleManager = roleManager;
         }
 
 
@@ -23,8 +22,8 @@ namespace Identity_User_Roles.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var email  = User.Identity.Name;//find current username authenticated user
-                var user = await _userManager.FindByEmailAsync(email);
+                var Authenticated_Username = User.Identity.Name;//find current username authenticated user
+                var user = await _userManager.FindByEmailAsync(Authenticated_Username);
                 if(await _userManager.IsInRoleAsync(user, "Admin"))
                 {
                     return RedirectToAction("Index", "Home");
@@ -38,12 +37,13 @@ namespace Identity_User_Roles.Controllers
         }
 
 
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.email, model.password, false, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.email, model.password, true, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByEmailAsync(model.email);
