@@ -119,10 +119,89 @@ Make sure it is placed above app.Run() at the bottom of Program.cs
 
 ```
 
+<br>
+
+### Use the [Authorize] attribute to authenticate and authorize access to the page based on roles
+
+```csharp
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Identity_User_Roles.Controllers
+{
+    [Authorize(Roles = "User")]
+    public class Home2Controller : Controller
+    {
+
+
+        private readonly SignInManager<IdentityUser> _signInManager;
+        public Home2Controller(SignInManager<IdentityUser> signInManager)
+        {
+            _signInManager = signInManager;
+        }
+
+        public IActionResult Index()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login", "Account");
+        }
+
+
+
+    }
+}
+
+
+```
+
+<br>
+
+### This is the method where, once the user is authenticated, they won't be able to go back to the login page using the browser's back button unless they log out first. This is implemented by checking the user's current role.
+
+<br>
+
+```csharp
+      public async Task<IActionResult> Login()
+      {
+          if (User.Identity.IsAuthenticated)
+          {
+              var Authenticated_Username = User.Identity.Name;//find current username authenticated user
+              var user = await _userManager.FindByEmailAsync(Authenticated_Username);
+              if(await _userManager.IsInRoleAsync(user, "Admin"))
+              {
+                  return RedirectToAction("Index", "Home");
+              }
+              else
+              {
+                  return RedirectToAction("Index", "Home2");
+              }   
+          }
+          return View();
+      }
+
+```
+
 
 
 <br>
 <br>
+<br>
+<br>
+<br>
+<br>
+
 
 
 # This is the method to use if you don't want to allow admin registration through the UI. Instead, you can hardcode the admin's email and password in the code using default seeding.
