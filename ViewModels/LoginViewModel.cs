@@ -12,7 +12,5 @@ namespace Identity_User_Roles.ViewModels
         [Required(ErrorMessage = "password must required")]
         public string? password { get; set; }
 
-
-        public bool Rememberme { get; set; }
     }
 }

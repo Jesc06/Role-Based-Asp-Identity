@@ -8,10 +8,13 @@ namespace Identity_User_Roles.Controllers
     {
 
         private readonly UserManager<IdentityUser> _userManager;
-
-        public RegisterController(UserManager<IdentityUser> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        public RegisterController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
+            _signInManager = signInManager;
         }
 
 
@@ -31,9 +34,13 @@ namespace Identity_User_Roles.Controllers
                     Email = model.email,
                     UserName = model.email
                 };
+
                 var result = await _userManager.CreateAsync(user,model.password);
+
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, model.role);
+
                     return RedirectToAction("Login","Account");
                 }
                 else
@@ -43,6 +50,7 @@ namespace Identity_User_Roles.Controllers
             }
             return View();
         }
+
 
 
 

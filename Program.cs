@@ -47,8 +47,15 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
 name:"default",
-pattern:"{controller=Home}/{action=Index}/{id?}"
+pattern:"{controller=Account}/{action=Login}/{id?}"
 );
 
 
-app.Run();
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await SeedService.SeedRoles(roleManager);
+}
+
+
+    app.Run();

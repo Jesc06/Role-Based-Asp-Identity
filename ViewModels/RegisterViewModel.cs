@@ -9,6 +9,10 @@ namespace Identity_User_Roles.ViewModels
 
 
 
+        [Required(ErrorMessage = "Role must required")]
+        public string? role { get; set; }  
+
+
         [Required(ErrorMessage = "password must required")]
         [Compare("Confirmpassword",ErrorMessage = "Password does not match.")]
         public string? password { get; set; }
