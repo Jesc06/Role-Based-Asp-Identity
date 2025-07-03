@@ -36,6 +36,18 @@ namespace Identity_User_Roles.Services
 
 ```csharp
 
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders()
+    .AddRoles<IdentityRole>();
+
+```
+
+
+<br>
+
+```csharp
+
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -43,6 +55,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 ```
+<br>
+
 
 Make sure it is placed above app.Run() at the bottom of Program.cs
 
