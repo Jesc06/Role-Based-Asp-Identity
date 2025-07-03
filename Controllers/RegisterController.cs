@@ -9,16 +9,14 @@ namespace Identity_User_Roles.Controllers
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
         public RegisterController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _signInManager = signInManager;
         }
 
 
-        public IActionResult Index()
+        public IActionResult Index() 
         {
             return View();
         }
